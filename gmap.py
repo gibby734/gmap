@@ -1,18 +1,37 @@
 import nmap
 import argparse
 
-def run_nmap(target):
-    nm = nmap.PortScanner()
-    print(f"\n[+] Scanning {target} with gmap; there is nowhere to hide [+]\n")
+def print_ascii_header():
+    header = r"""
+                                                                                                        ___   
+                                                                                                     .'/   \  
+                     __  __   ___                                 _________   _...._                / /     \ 
+  .--./)            |  |/  `.'   `.                               \        |.'      '-.             | |     | 
+ /.''\\             |   .-.  .-.   '                               \        .'```'.    '.           | |     | 
+| |  | |            |  |  |  |  |  |              __                \      |       \     \          |/`.   .' 
+ \`-' /             |  |  |  |  |  |           .:--.'.               |     |        |    |           `.|   |  
+ /("'`              |  |  |  |  |  |          / |   \ |              |      \      /    .             ||___|  
+ \ '---.            |  |  |  |  |  |          `" __ | |              |     |\`'-.-'   .'              |/___/  
+  /'""'.\           |__|  |__|  |__|           .'.''| |              |     | '-....-'`                .'.--.  
+ ||     ||                                    / /   | |_            .'     '.                        | |    | 
+ \'. __//                                     \ \._,\ '/          '-----------'                      \_\    / 
+  `'---'                                       `--'  `"                                               `''--'  
+    """
+    print(header)
 
-    # Run Nmap with maximum scannability
+def run_nmap(target):
+    print_ascii_header()  # Print the ASCII header
+    nm = nmap.PortScanner()
+    print(f"\n[+] Scanning {target} with gmap...\n")
+
+    # Run Nmap with maximum scannability flags
     scan_args = "-A -p- -T4 -Pn -sC -sV --min-rate=2000"
     
     try:
         nm.scan(target, arguments=scan_args)
         print(f"\nScan results for {target}:\n")
         
-        # Display results in standard format 
+        # Display scan results
         for host in nm.all_hosts():
             print(f"Host: {host} ({nm[host].hostname()})")
             print(f"State: {nm[host].state()}")
